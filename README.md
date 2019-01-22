@@ -2,7 +2,7 @@
 #### Encode or decode base64 or base32 using a custom alphabet
 
 ```markdown
-usage: custombase.py [-h] -in STRING_IN -f | FILE_IN [-c CUSTOMALPHABET] [-32] [-hex]
+usage: custombase.py [-h] -in STRING_IN | -f FILE_IN [-c CUSTOMALPHABET] [-32] [-hex]
                      [-r REPLACE] [-e] [-d]
 
 Decode or encode base64 or base32 with an optional custom alphabet
