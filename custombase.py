@@ -23,7 +23,8 @@ def encode_base(string_to_encode,alphabet,standard_base,base32):
 
 def main():
 	parser = argparse.ArgumentParser(description='Decode or encode base64 or base32 with an optional custom alphabet')
-	parser.add_argument('-in','--string_in',help='Encoded base64 string',required=True)
+	parser.add_argument('-in','--string_in',help='Input string that needs to be encoded/decoded',required=False)
+	parser.add_argument('-f','--file_in',help='Input filename that needs to be encoded/decoded',required=False)
 	parser.add_argument('-c','--customalphabet',help='Specify a custom alphabet',required=False)
 	parser.add_argument('-32','--base32',help='Use base32 instead of base64',action='store_true',required=False)
 	parser.add_argument('-hex','--hexdump',help='Output with hexdump()',action='store_true',required=False)
@@ -34,6 +35,7 @@ def main():
 	args = parser.parse_args()
 
 	string_in = args.string_in
+	file_in = args.file_in
 	dohexdump = args.hexdump
 	base32 = args.base32
 
@@ -41,12 +43,19 @@ def main():
 	decode = args.decode
 
 
+	if not string_in and not file_in:
+		print 'You should provide at least an input string or a filename...exiting'
+		exit()
 	if not encode and not decode:
 		print 'Need to use encode or decode flag, exiting...'
 		exit()
 	elif encode and decode:
 		print 'You should not try to decode and encode at the same time, exiting...'
 		exit()
+	elif string_in and file_in:
+		print 'You should provide only a filename or an input string, not both, exiting...'
+		exit()
+  
 
 	if base32:
 		standard_base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567' #standard base32 alphabet
@@ -68,6 +77,10 @@ def main():
 		print 'replace char is: %s' % replace_char
 	else:
 		replace_char = None
+
+	if file_in:
+		with open(file_in, 'rb') as myfile:
+			string_in=myfile.read()
 
 	if decode:
 		#replace padding char if needed
